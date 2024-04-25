@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table Panel Component</title>
+<style>
+  .table-panel {
+    overflow: auto;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .table-row {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ccc;
+  }
+  .table-cell {
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+</style>
+</head>
+<body>
+
+<div id="table-panel" class="table-panel"></div>
+
+<script>
+
+  class TablePanel {
+    constructor(container, data, columnSizes, cellTemplates) {
+      this.container = container;
+      this.data = data;
+      this.columnSizes = columnSizes;
+      this.cellTemplates = cellTemplates;
+      this.render();
+    }
+
+    render() {
+      const table = document.createElement('div');
+      table.classList.add('table-panel');
+
+      this.data.forEach(rowData => {
+        const row = document.createElement('div');
+        row.classList.add('table-row');
+
+        Object.keys(rowData).forEach((key, index) => {
+          const cell = document.createElement('div');
+          cell.classList.add('table-cell');
+          cell.style.flexBasis = this.columnSizes[index];
+
+          if (this.cellTemplates[key]) {
+            cell.innerHTML = this.cellTemplates[key](rowData);
+          } else {
+            cell.textContent = rowData[key];
+          }
+
+          row.appendChild(cell);
+        });
+
+        table.appendChild(row);
+      });
+
+      this.container.appendChild(table);
+    }
+  }
+
+  // Example data
+
+
+  const container = document.getElementById('table-panel');
+  const data = [
+    { id: 1, name: 'John', age: 30 },
+    { id: 2, name: 'Jane', age: 25 },
+    { id: 3, name: 'Doe', age: 40},
+    { id: 4, name: 'Bernard', age: 24 }
+  ];
+
+  // Example column sizes
+  const columnSizes = ['30%', '40%', '30%'];
+
+  // Example cell templates
+  const cellTemplates = {
+    name: rowData => `<strong>${rowData.name}</strong>`,
+    age: rowData => `<span style="color: blue;">${rowData.age}</span>`,
+    gender: rowData => rowData.gender || '-'
+  };
+
+  // Create and render the table panel with cell templates and scrolling/overflow handling
+  const tablePanel = new TablePanel(container, data, columnSizes, cellTemplates);
+</script>
+
+</body>
+</html>
