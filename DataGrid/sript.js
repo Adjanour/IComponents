@@ -1,3 +1,4 @@
+
 //This is faster on large array sets since it creates no intermediary arrays and loops over the large array only once
 // It is more efficient with a complexity of O(n) and more concise and easier to understand
 function findObjectWithMostKeysBetter(arr) {
@@ -74,28 +75,17 @@ class DataGrid {
           // Update the data
           this.data[rowIndex - 1][column] = updatedValue;
 
-          // save new data to a file
 
           // Save new data to a file
-          const fileHandle = await window.showSaveFilePicker();
           // create a FileSystemWritableFileStream to write to
           // const writableStream = await fileHandle.createWritable();
           const jsonContent = JSON.stringify(this.data);
-          const writableStream = await fileHandle.createWritable();
+          const fileHandler = await window.showSaveFilePicker();
+          const writableStream = await fileHandler.createWritable();
           await writableStream.write(jsonContent);
           await writableStream.close()
-          // // write our file
-          // await writableStream.write(JSON.stringify(this.data, null, 2) + "\n");
-
-          // writableStream.close();
-        //   // close the file and write the
-        //   const file = await fileHandle.getFile();
-        //   console.log(file);
+        
          
-        //   // const fileHandle = await window.requestFileSystemAccess();
-        //  ;
-
-        //   this.render();
           this.render(); // Re-render for immediate visual update
         });
         const key = Object.keys(rowData)[i];
@@ -135,8 +125,20 @@ class DataGrid {
   }
   async loadFromFile() {
     try {
-      const fileHandle = await window.showOpenFilePicker();
-      const file = await fileHandle.getFile("gridData.json");
+      const pickerOpts = {
+        types: [
+          {
+            description: "Json",
+            accept: {
+              "json/*":[".json"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+        multiple: false,
+      };
+      const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
+      const file = await fileHandle.getFile();
       const fileContents = await file.text();
       this.data = JSON.parse(fileContents);
       this.render();
@@ -352,6 +354,14 @@ const data = [
 ];
 
 const dataGrid = new DataGrid(container, data);
-dataGrid.loadFromFile(); // Load data from file if it exists
+container.addEventListener("click", (event) => {
+  event.preventDefault();
+  dataGrid.loadFromFile(); // Load data from file if it exists
+  if (event.target.tagName === "TH") {
+    console.log("TH clicked");
+  }
+}
+);
+
 
 // const dataGrid = new DataGrid(container, data);
