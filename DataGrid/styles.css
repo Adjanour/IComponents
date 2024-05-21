@@ -3,12 +3,18 @@
   font-family: Arial, sans-serif;
 }
 
+body {
+  font-family: Arial, sans-serif;
+}
+
+
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: 0;
+  margin-bottom: 5px;
   padding: 0;
   table-layout: auto;
+  
 }
 
 th, td {
@@ -36,4 +42,12 @@ tr:hover {
   margin: 20px 0;   /* Some margin for better spacing */
 }
 
-  
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+}

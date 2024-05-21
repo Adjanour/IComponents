@@ -1,4 +1,3 @@
-
 //This is faster on large array sets since it creates no intermediary arrays and loops over the large array only once
 // It is more efficient with a complexity of O(n) and more concise and easier to understand
 function findObjectWithMostKeysBetter(arr) {
@@ -71,10 +70,8 @@ class DataGrid {
           const columnheaders = document.querySelectorAll("th");
           const column = columnheaders[columnIndex].textContent;
 
-        
           // Update the data
           this.data[rowIndex - 1][column] = updatedValue;
-
 
           // Save new data to a file
           // create a FileSystemWritableFileStream to write to
@@ -83,9 +80,8 @@ class DataGrid {
           const fileHandler = await window.showSaveFilePicker();
           const writableStream = await fileHandler.createWritable();
           await writableStream.write(jsonContent);
-          await writableStream.close()
-        
-         
+          await writableStream.close();
+
           this.render(); // Re-render for immediate visual update
         });
         const key = Object.keys(rowData)[i];
@@ -130,14 +126,14 @@ class DataGrid {
           {
             description: "Json",
             accept: {
-              "json/*":[".json"],
+              "json/*": [".json"],
             },
           },
         ],
         excludeAcceptAllOption: true,
         multiple: false,
       };
-      const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
+      const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
       const file = await fileHandle.getFile();
       const fileContents = await file.text();
       this.data = JSON.parse(fileContents);
@@ -360,8 +356,6 @@ container.addEventListener("click", (event) => {
   if (event.target.tagName === "TH") {
     console.log("TH clicked");
   }
-}
-);
-
+});
 
 // const dataGrid = new DataGrid(container, data);
